@@ -19,14 +19,14 @@ import {
 import Profile from './Profile'
 import Timetable from './Timetable'
 
-const TabView = () => {
+const TabView = ({ navigation }) => {
     const logout = () => {
         Alert.alert(
             'Logout',
             'Do you want to logout?',
             [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'Ok', onPress: () => console.log('ok Pressed')}
+                {text: 'Ok', onPress: () => navigation.navigate('Login')}
             ]
         );
     }

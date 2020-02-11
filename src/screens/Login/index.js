@@ -15,7 +15,12 @@ import {
     Text
 } from "native-base"
 
-const Login = () => {
+const Login = ({ navigation }) => {
+
+    const login = () => {
+        navigation.navigate('TabView')
+    }
+
     return (
         <Container>
             <Header>
@@ -36,7 +41,7 @@ const Login = () => {
                         <Input secureTextEntry={true}/>
                     </Item>
                 </Form>
-                <Button block style={{ margin: 15, marginTop: 50 }}>
+                <Button block style={{ margin: 15, marginTop: 50 }} onPress={login}>
                     <Text>Sign In</Text>
                 </Button>
             </Content>
