@@ -1,0 +1,47 @@
+[
+    {
+        "type": "Teaching-Lecture",
+        "start": "February 10, 2020 09:00:00",
+        "end": "February 10, 2020 11:00:00",
+        "duration": "2 hours",
+        "location": "N344 (65 cap) - SIWB",
+        "moduleName": "CONCURRENT PROGRAMMING-CM3113",
+        "staff": "Lonie, David"
+    },
+    {
+        "type": "Teaching-Laboratory/Practical",
+        "start": "February 10, 2020 11:00:00",
+        "end": "February 10, 2020 13:00:00",
+        "duration": "2 hours",
+        "location": "N533 (FY IT Lab - 116 cap) - SIWB",
+        "moduleName": "CONCURRENT PROGRAMMING-CM3113",
+        "staff": "Lonie, David; Upadhyay, Ashish"
+    },
+    {
+        "type": "Teaching-Lecture",
+        "start": "February 11, 2020 09:00:00",
+        "end": "February 11, 2020 11:00:00",
+        "duration": "2 hours",
+        "location": "H234 (147 cap L/T) - IGB",
+        "moduleName": "ARTIFICAL INTELLIGENCE FOR PROBLEM SOLVING-CM3038",
+        "staff": "Hui, Kit-ying"
+    },
+    {
+        "type": "Teaching-Lecture",
+        "start": "February 11, 2020 14:00:00",
+        "end": "February 11, 2020 15:00:00",
+        "duration": "1 hours",
+        "location": "H234 (147 cap L/T) - IGB",
+        "moduleName": "COMPUTER SECURITY AND CRYPTOGRAPHY-CM3104",
+        "staff": "McDermott, Roger"
+    },
+    {
+        "type": "Teaching-Laboratory/Practical",
+        "start": "February 11, 2020 15:00:00",
+        "end": "February 11, 2020 17:00:00",
+        "duration": "2 hours",
+        "location": "N533 (FY IT Lab - 116 cap) - SIWB",
+        "moduleName": "ARTIFICAL INTELLIGENCE FOR PROBLEM SOLVING-CM3038",
+        "staff": "Barlett, Mark; Hui, Kit-ying; Wijekoon, Anjana"
+    }
+]

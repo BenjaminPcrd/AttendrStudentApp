@@ -23,8 +23,9 @@ const Profile = () => {
                 </Button>
             </Modal>
             <Content contentContainerStyle={{ justifyContent: 'space-evenly', alignItems: 'center', flex: 1 }}>
-                <Text>Name of the student</Text>
-                <Text>Id</Text>
+                <Text style={{fontSize: 30, fontWeight: 'bold'}}>Picard Benjamin</Text>
+                <Text>1907005</Text>
+
                 <Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
                     <Text>Attend</Text>
                 </Button>
