@@ -1,19 +1,31 @@
-import React from "react"
+import React, { useState } from "react"
+import { Modal } from 'react-native'
 import {
     Container,
     Content,
-    Thumbnail,
     Text,
-    Button
+    Button,
+    Icon
 } from 'native-base'
 
 const Profile = () => {
+    const [modalVisible, setModalVisible] = useState(false)
+
     return (
         <Container>
+            <Modal
+                animationType="slide"
+                transparent={false}
+                visible={modalVisible}
+            >
+                <Button style={{width: 50, alignSelf: 'flex-end'}} transparent onPress={() => setModalVisible(false)}>
+                    <Icon name="md-close" style={{color: 'black'}}/>
+                </Button>
+            </Modal>
             <Content contentContainerStyle={{ justifyContent: 'space-evenly', alignItems: 'center', flex: 1 }}>
                 <Text>Name of the student</Text>
                 <Text>Id</Text>
-                <Button block style={{ margin: 15, marginTop: 50 }}>
+                <Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
                     <Text>Attend</Text>
                 </Button>
             </Content>
