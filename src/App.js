@@ -3,6 +3,9 @@ import React from "react"
 
 import Login from "./screens/Login"
 import TabView from './screens/TabView'
+import Profile from './screens/TabView/Profile'
+import Timetable from './screens/TabView/Timetable'
+
 import {
     StyleProvider
 } from "native-base"
@@ -12,6 +15,7 @@ import material from "../native-base-theme/variables/material"
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 const AuthContext = React.createContext()
 const Stack = createStackNavigator()
@@ -61,7 +65,7 @@ const App = () => {
                             <Stack.Screen name="TabView" component={TabView} />
                         )*/} 
                         <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen name="TabView" component={TabView} />{/*use react navigation*/}
+                        <Stack.Screen name="TabView" component={TabView} />{/*use react navigation*/}
                     </Stack.Navigator>
                 </NavigationContainer>
             </AuthContext.Provider>
