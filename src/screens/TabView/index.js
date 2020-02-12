@@ -44,7 +44,7 @@ const TabView = ({ navigation }) => {
                 </Button>
                 </Right>
             </Header>
-            <Tabs>
+            <Tabs tabBarPosition={'bottom'}>
                 <Tab heading={ <TabHeading><Icon name="md-person" /><Text>Profile</Text></TabHeading>}>
                     <Profile />
                 </Tab>

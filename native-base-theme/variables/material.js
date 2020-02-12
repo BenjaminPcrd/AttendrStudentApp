@@ -16,6 +16,8 @@ const isIphoneX =
     deviceHeight === 896 ||
     deviceWidth === 896);
 
+const rguPurple = '#712177'
+
 export default {
   platformStyle,
   platform,
@@ -124,7 +126,7 @@ export default {
 
   // Color
   //brandPrimary: '#3F51B5',
-  brandPrimary: '#7E2478',
+  brandPrimary: rguPurple,
   brandInfo: '#62B1F6',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -172,7 +174,7 @@ export default {
   // Header
   toolbarBtnColor: '#fff',
   //toolbarDefaultBg: '#3F51B5',
-  toolbarDefaultBg: '#7E2478',
+  toolbarDefaultBg: rguPurple,
   toolbarHeight: 56,
   toolbarSearchIconSize: 23,
   toolbarInputColor: '#fff',
@@ -253,7 +255,7 @@ export default {
 
   // Tab
   //tabDefaultBg: '#3F51B5',
-  tabDefaultBg:  '#7E2478',
+  tabDefaultBg:  rguPurple,
   //topTabBarTextColor: '#b3c7f9',
   topTabBarTextColor: '#aaa',
   topTabBarActiveTextColor: '#fff',
