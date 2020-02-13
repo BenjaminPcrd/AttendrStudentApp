@@ -1,7 +1,6 @@
 import React from "react"
 
 import {
-    TouchableOpacity,
     FlatList,
     View
 } from 'react-native'
@@ -36,17 +35,21 @@ const MyCard = ({ item }) => {
                         )
                     }
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.moduleName}</Text>
+                    {/*<Text>{new Date(item.start).toDateString()}</Text>*/}
                     <Text style={{color: 'grey'}}>{item.staff}</Text>
                 </Body>
             </CardItem>
             <CardItem style={{flexDirection: 'row', justifyContent: 'space-evenly', backgroundColor: '#DDD'}}>
                 <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
                     <Icon name="md-clock" style={{color: '#712177'}}/>
-                    <Text>{item.duration}</Text>
+                    <View>
+                        <Text>{new Date(item.start).toLocaleTimeString().replace(/(\d{1,2}:\d{2}):\d{2}/, "$1")}</Text>
+                        <Text>{new Date(item.end).toLocaleTimeString().replace(/(\d{1,2}:\d{2}):\d{2}/, "$1")}</Text>
+                    </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
                     <Icon name="md-pin" style={{color: '#712177'}}/>
-                    <Text>{item.location}</Text>
+                    <Text style={{flex: 1, flexWrap: 'wrap'}}>{item.location}</Text>
                 </View>
             </CardItem>
         </Card>
@@ -55,14 +58,12 @@ const MyCard = ({ item }) => {
 
 const Timetable = () => {
     return (
-        <Container>
-            <Content padder>
-                <FlatList 
-                    data={timetableData}
-                    renderItem={({ item }) => <MyCard item={item}/>}
-                    keyExtractor={(item, index) => index}
-                />
-            </Content>
+        <Container style={{padding: 5}}>
+            <FlatList 
+                data={timetableData}
+                renderItem={({ item }) => <MyCard item={item}/>}
+                keyExtractor={(item, index) => index.toString()}
+            />
         </Container>
     )
 }

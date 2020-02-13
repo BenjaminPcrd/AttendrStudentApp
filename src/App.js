@@ -65,7 +65,7 @@ const App = () => {
                             <Stack.Screen name="TabView" component={TabView} />
                         )*/} 
                         <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="TabView" component={TabView} />{/*use react navigation*/}
+                        <Stack.Screen name="TabView" component={TabView} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </AuthContext.Provider>
