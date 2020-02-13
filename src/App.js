@@ -1,5 +1,9 @@
 import 'react-native-gesture-handler'
-import React from "react"
+import React, {
+    createContext,
+    useReducer,
+    useMemo
+} from "react"
 
 import Login from "./screens/Login"
 import TabView from './screens/TabView'
@@ -7,7 +11,9 @@ import Profile from './screens/TabView/Profile'
 import Timetable from './screens/TabView/Timetable'
 
 import {
-    StyleProvider
+    StyleProvider,
+    Button,
+    Root
 } from "native-base"
 
 import getTheme from "../native-base-theme/components"
@@ -17,11 +23,11 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-const AuthContext = React.createContext()
+export const AuthContext = createContext()
 const Stack = createStackNavigator()
 
-const App = () => {
-    const [state, dispatch] = React.useReducer(
+const App = ({ navigation }) => {
+    const [state, dispatch] = useReducer(
         (prevState, action) => {
         switch(action.type) {
             case 'SIGN_IN':
@@ -34,42 +40,43 @@ const App = () => {
                 return {
                     ...prevState,
                     isSignout: true,
-                    userToken: undefined
+                    userToken: null
                 }
         }
     }, 
     {
-        isSignout: false,
+        isSignout: true,
         userToken: null
     })
 
-    const authContext = React.useMemo(
+    const authContext = useMemo(
         () => ({
             signIn: async data => {
-                console.log(signin)
                 dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' })
             },
-            signOut: () => dispatch({ type: 'SIGN_OUT' }),
+            signOut: () => {
+                dispatch({ type: 'SIGN_OUT' })
+            },
         }), []
     )
 
     return (
         <StyleProvider style={getTheme(material)}>
+            <Root>
 
-            <AuthContext.Provider value={authContext}>
-                <NavigationContainer>
-                    <Stack.Navigator headerMode='none'>
-                        {/*state.userToken === null ? (
-                            <Stack.Screen name="Login" component={Login} />
-                        ) : (
-                            <Stack.Screen name="TabView" component={TabView} />
-                        )*/} 
-                        <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="TabView" component={TabView} />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </AuthContext.Provider>
-
+                <AuthContext.Provider value={authContext}>
+                    <NavigationContainer>
+                        <Stack.Navigator headerMode='none'>
+                            {state.userToken === null ? (
+                                <Stack.Screen name="Login" component={Login} />
+                            ) : (
+                                <Stack.Screen name="TabView" component={TabView} />
+                            )}
+                        </Stack.Navigator>
+                    </NavigationContainer>
+                </AuthContext.Provider>
+                
+            </Root>
         </StyleProvider>
     )
 }

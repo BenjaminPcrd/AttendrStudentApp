@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Image } from 'react-native'
 import {
     Container,
@@ -13,15 +13,35 @@ import {
     Label,
     Input,
     Button,
-    Text
+    Text,
+    Toast
 } from "native-base"
+import { AuthContext } from '../../App'
 
-const Login = ({ navigation }) => {
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    //const { signIn } = React.useContext(AuthContext);
+const Login = (props) => {
+    const [username, setUsername] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const { signIn } = useContext(AuthContext)
+
     const login = () => {
-        navigation.navigate('TabView')
+        if(username === "" && password === "") {
+            Toast.show({
+                text: "Please enter a username and a password",
+                duration: 2000
+            })
+        } else if (username === "") {
+            Toast.show({
+                text: "Please enter a username",
+                duration: 2000
+            })
+        } else if (password === "") {
+            Toast.show({
+                text: "Please enter a password",
+                duration: 2000
+            })
+        } else  {
+            signIn({ username, password})
+        }
     }
 
     return (
@@ -51,6 +71,7 @@ const Login = ({ navigation }) => {
             </Content>
       </Container>
     )
+
 }
 
 export default Login

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
     Alert,
 } from 'react-native'
@@ -18,18 +18,21 @@ import {
 import Profile from './Profile'
 import Timetable from './Timetable'
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { AuthContext } from '../../App'
 
 const Tab = createMaterialTopTabNavigator()
 
 const TabView = ({ navigation }) => {
+    const { signOut } = useContext(AuthContext)
+
     const logout = () => {
         Alert.alert(
             'Logout',
             'Do you want to logout?',
             [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'Ok', onPress: () => navigation.navigate('Login')}
+                {text: 'Ok', onPress: () => signOut()}
             ]
         );
     }
