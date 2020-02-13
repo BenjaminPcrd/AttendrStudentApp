@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { Image } from 'react-native'
+import { Image, Alert } from 'react-native'
 import {
     Container,
     Header,
@@ -13,6 +13,7 @@ import {
     Label,
     Input,
     Button,
+    Icon,
     Text,
     Toast
 } from "native-base"
@@ -47,7 +48,17 @@ const Login = (props) => {
     return (
         <Container>
             <Header>
-                <Left />
+                <Left>
+                    <Button transparent onPress={() => Alert.alert(
+                        'Information',
+                        'RGU attend app',
+                        [
+                            {text: 'Ok'}
+                        ]
+                    )}>
+                        <Icon name='md-information-circle-outline' />
+                    </Button>
+                </Left>
                 <Body>
                     <Title>RGU Attend</Title>
                 </Body>

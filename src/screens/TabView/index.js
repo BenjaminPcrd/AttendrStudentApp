@@ -34,7 +34,7 @@ const TabView = ({ navigation }) => {
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'Ok', onPress: () => signOut()}
             ]
-        );
+        )
     }
 
     return (
@@ -45,9 +45,9 @@ const TabView = ({ navigation }) => {
                     <Title>RGU Attend</Title>
                 </Body>
                 <Right>
-                <Button transparent onPress={logout}>
-                    <Icon name='md-log-out' />
-                </Button>
+                    <Button transparent onPress={logout}>
+                        <Icon name='md-log-out' />
+                    </Button>
                 </Right>
             </Header>
             {/*<Tabs tabBarPosition={'bottom'}>
