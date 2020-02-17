@@ -60,7 +60,7 @@ const Login = (props) => {
                     </Button>
                 </Left>
                 <Body>
-                    <Title>RGU Attend</Title>
+                    <Title>Attend Student</Title>
                 </Body>
                 <Right />
             </Header>
@@ -82,7 +82,7 @@ const Login = (props) => {
             </Content>
       </Container>
     )
-
+    
 }
 
 export default Login

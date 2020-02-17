@@ -18,10 +18,10 @@ import {
 import Profile from './Profile'
 import Timetable from './Timetable'
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AuthContext } from '../../App'
 
-const Tab = createMaterialTopTabNavigator()
+const Tab = createBottomTabNavigator()
 
 const TabView = ({ navigation }) => {
     const { signOut } = useContext(AuthContext)
@@ -42,7 +42,7 @@ const TabView = ({ navigation }) => {
             <Header hasTabs>
                 <Left />
                 <Body>
-                    <Title>RGU Attend</Title>
+                    <Title>Attend Student</Title>
                 </Body>
                 <Right>
                     <Button transparent onPress={logout}>
@@ -59,15 +59,10 @@ const TabView = ({ navigation }) => {
                 </Tab>
             </Tabs>*/}
             <Tab.Navigator
-                lazy={false}
-                tabBarPosition={'bottom'}
+                lazy={true}
                 tabBarOptions={{
                     activeTintColor: "white",
-                    inactiveTintColor: "grey",
-                    style: { backgroundColor: '#712177' },
-                    indicatorStyle: { backgroundColor: 'white' },
-                    labelStyle: { marginBottom: 0, fontWeight: 'bold' },
-                    showIcon: true
+                    style: { backgroundColor: '#712177' }
                 }}
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
