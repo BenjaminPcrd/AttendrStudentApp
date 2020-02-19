@@ -6,8 +6,7 @@ import {
 } from 'react-native'
 
 import { 
-    Container, 
-    Content,
+    Container,
     Card,
     CardItem,
     Text,
@@ -58,7 +57,7 @@ const MyCard = ({ item }) => {
 
 const Timetable = () => {
     return (
-        <Container style={{padding: 5}}>
+        <Container style={{padding: 0}}>
             <FlatList 
                 data={timetableData}
                 renderItem={({ item }) => <MyCard item={item}/>}

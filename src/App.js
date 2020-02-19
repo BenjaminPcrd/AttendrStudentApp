@@ -2,18 +2,25 @@ import 'react-native-gesture-handler'
 import React, {
     createContext,
     useReducer,
-    useMemo
+    useMemo,
+    useEffect
 } from "react"
+
+import AsyncStorage from '@react-native-community/async-storage'
 
 import Login from "./screens/Login"
 import TabView from './screens/TabView'
 import Profile from './screens/TabView/Profile'
 import Timetable from './screens/TabView/Timetable'
+import Loading from "./screens/Loading"
 
 import {
     StyleProvider,
     Button,
-    Root
+    Root,
+    Container,
+    Content,
+    Spinner
 } from "native-base"
 
 import getTheme from "../native-base-theme/components"
@@ -30,35 +37,71 @@ const App = ({ navigation }) => {
     const [state, dispatch] = useReducer(
         (prevState, action) => {
         switch(action.type) {
+            case 'RESTORE_TOKEN':
+                return {
+                    ...prevState,
+                    userToken: action.token,
+                    isLoading: false,
+                };
             case 'SIGN_IN':
                 return {
                     ...prevState,
                     isSignout: false,
-                    userToken: action.token
+                    userToken: action.token,
                 }
             case 'SIGN_OUT':
                 return {
                     ...prevState,
                     isSignout: true,
-                    userToken: null
+                    userToken: null,
                 }
         }
     }, 
     {
-        isSignout: true,
+        isLoading: true,
+        isSignout: false,
         userToken: null
     })
+
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+            let userToken
+
+            try {
+                userToken = await AsyncStorage.getItem('userToken')
+            } catch(e) {
+
+            }
+            
+            dispatch({ type: 'RESTORE_TOKEN', token: userToken })
+        }
+
+        bootstrapAsync()
+    }, [])
 
     const authContext = useMemo(
         () => ({
             signIn: async data => {
+                await AsyncStorage.setItem('userToken', 'dummy-auth-token')
                 dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' })
             },
-            signOut: () => {
+            signOut: async () => {
+                await AsyncStorage.removeItem('userToken')
                 dispatch({ type: 'SIGN_OUT' })
+                
             },
         }), []
     )
+
+    if (state.isLoading) {
+        return (
+            <Container>
+                <Content contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                    <Spinner color='#712177'/>
+                </Content>
+            </Container>
+        )
+    }
 
     return (
         <StyleProvider style={getTheme(material)}>
