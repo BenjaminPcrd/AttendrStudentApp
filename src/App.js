@@ -12,7 +12,6 @@ import Login from "./screens/Login"
 import TabView from './screens/TabView'
 import Profile from './screens/TabView/Profile'
 import Timetable from './screens/TabView/Timetable'
-import Loading from "./screens/Loading"
 
 import {
     StyleProvider,
