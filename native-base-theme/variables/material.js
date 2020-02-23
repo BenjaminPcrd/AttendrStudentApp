@@ -17,6 +17,7 @@ const isIphoneX =
     deviceWidth === 896);
 
 const rguPurple = '#712177'
+const rguOrange = '#FF8000'
 
 export default {
   platformStyle,
@@ -127,7 +128,8 @@ export default {
   // Color
   //brandPrimary: '#3F51B5',
   brandPrimary: rguPurple,
-  brandInfo: '#62B1F6',
+  brandInfo: rguOrange,
+  //brandInfo: '#62B1F6',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
   brandWarning: '#f0ad4e',
