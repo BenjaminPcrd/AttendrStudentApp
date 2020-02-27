@@ -17,16 +17,21 @@ const TimetableCard = ({ item }) => {
     return (
         <Card>
             <CardItem header bordered>
-                <Badge primary><Text>{item.type}</Text></Badge>
+                <View style={{
+                    flex: 1, 
+                    backgroundColor: item.typeId == 0 ? "rgb(100, 200, 100)" : "rgb(200, 100, 150)", 
+                    paddingLeft: 10, paddingTop: 5, paddingBottom: 5,
+                    borderRadius: 10
+                }}><Text style={{color: 'black'}}>{item.type}</Text></View>
             </CardItem>
             <CardItem>
-                <Left>
+                <Left style={{flex: 3}}>
                     <Body>
-                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{item.moduleName}</Text>
+                        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'rgb(100, 100, 200)'}}>{item.moduleName}</Text>
                         <Text style={{color: 'grey'}}>{item.staff}</Text>
                     </Body>
                 </Left>
-                <Right>
+                <Right style={{flex: 1}}>
                     <Body style={{justifyContent: 'center'}}>
                         {/*<Icon name="md-checkmark" style={{color: '#712177'}}/>*/}
                         <Icon name="md-done-all" style={{color: '#712177', fontSize: 50}}/>
