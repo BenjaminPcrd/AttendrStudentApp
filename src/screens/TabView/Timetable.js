@@ -8,41 +8,90 @@ import {
 
 import { 
     Container,
-    Card,
-    CardItem,
+    Spinner,
     Text,
-    Body,
-    Badge,
-    Icon,
-    Button
+    Toast
 } from "native-base"
 
-import { getTimetableData } from '../../api/timetableApi'
-
 import TimetableCard from './TimetableCard'
+
+import AsyncStorage from '@react-native-community/async-storage'
+
+function getTimetableData() {
+    const url = "http://bepicard.com/timetable"
+    return new Promise((resolve, reject) => {
+        fetch(url)
+            .then(res => res.json())
+            .then(json => resolve(json))
+            .catch(err => reject(err))
+    })
+}
 
 const Timetable = () => {
     const [refreshing, setRefreshing] = useState(false)
     const [timetableData, setTimetableData] = useState()
+    const [lastUpdate, setLastUpdate] = useState()
+    const [count, setCount] = useState(0)
 
-    const onRefresh = useCallback(() => {
+    async function update() {
+        //console.log("update")
+        const json = await getTimetableData()
+        await AsyncStorage.setItem('timetable', JSON.stringify(json))
+        setTimetableData(json)
+
+        const date = new Date()
+        await AsyncStorage.setItem('lastUpdate', date.toISOString())
+        setLastUpdate(date)
+        setRefreshing(false)
+    }
+
+    const onRefresh = useCallback(async () => {
         setRefreshing(true)
-        setTimeout(() => setRefreshing(false), 2000)
+        update().catch(err => {
+            Toast.show({
+                text: "Couldn't get data",
+                duration: 2000
+            })
+            setRefreshing(false)
+        })
+        //setTimeout(() => setRefreshing(false), 2000)
       }, [refreshing])
 
-    /*const getUpdatedLabel = (date1, date2) => {
-        console.log(new Date(date1 - date2).getUTCSeconds())
-        let dif = new Date(date1 - date2)
-        if(dif.getUTCHours() > 0) return <Text style={{color: 'grey'}}>Updated a long time ago</Text>
-        if(dif.getUTCMinutes() == 0) return <Text style={{color: 'grey'}}>Updated just now</Text>
-        return <Text style={{color: 'grey'}}>Updated {dif.getUTCMinutes()} minutes ago</Text>
-    }*/
-
     useEffect(() => {
-        console.log("UseEffect")
-        getTimetableData().then(res => setTimetableData(res))
+        async function getTimetable() {
+            const timetable = await AsyncStorage.getItem('timetable')
+            const lastTimetableUpdate = await AsyncStorage.getItem('lastUpdate')
+            if(timetable == null || lastTimetableUpdate == null) {
+                update()
+            } else if(new Date(new Date() - new Date(lastTimetableUpdate)).getUTCHours() > 24) {
+                update()
+            } else {
+                setTimetableData(JSON.parse(timetable))
+                setLastUpdate(new Date(lastTimetableUpdate))
+            }
+        }
+        getTimetable()
+
+        setInterval(() => setCount((prevCount) => prevCount + 1), 15000)
     }, [])
 
+    function lastUpdateLabel() {
+        if(lastUpdate == undefined) {
+            return "Updating..."
+        } else {
+            let dif = new Date(new Date() - lastUpdate)
+            if(dif.getUTCMinutes() == 0) {
+                return "Updated just now"
+            } else if(dif.getUTCMinutes() > 0) {
+                return "Updated " + dif.getUTCMinutes() + " minutes ago"
+            } else if(dif.getUTCHours() > 0) {
+                return "Updated " + dif.getUTCHours() + " hours ago"
+            } else if(dif.getUTCHours() > 24) {
+                return "Updated a long time ago"
+            }
+        }
+    }
+    
     return (
         <Container style={{paddingLeft: 5, paddingRight: 5}}>
             <FlatList 
@@ -53,11 +102,12 @@ const Timetable = () => {
                     return (
                         <View>
                             <Text style={{marginTop: 10, textAlign: 'center', fontWeight: 'bold', fontSize: 20}}>{new Date().toDateString()}</Text>
-                            {/*getUpdatedLabel(now, updatedAt)*/}
-                            <Text style={{color: 'grey'}}>Updated just now</Text>
+                            <Text style={{color: 'grey'}}>{lastUpdateLabel()}</Text>
+                            
                         </View>
                     )
                 }}
+                ListEmptyComponent={<Spinner color='#712177'/>}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             />
         </Container>
