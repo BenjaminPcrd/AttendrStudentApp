@@ -34,7 +34,7 @@ const Timetable = () => {
     const [count, setCount] = useState(0)
 
     async function update() {
-        //console.log("update")
+        console.log("update")
         const json = await getTimetableData()
         await AsyncStorage.setItem('timetable', JSON.stringify(json))
         setTimetableData(json)
@@ -63,7 +63,7 @@ const Timetable = () => {
             const lastTimetableUpdate = await AsyncStorage.getItem('lastUpdate')
             if(timetable == null || lastTimetableUpdate == null) {
                 update()
-            } else if(new Date(new Date() - new Date(lastTimetableUpdate)).getUTCHours() > 24) {
+            } else if(new Date(lastTimetableUpdate).getDate() != new Date().getDate()) {
                 update()
             } else {
                 setTimetableData(JSON.parse(timetable))
@@ -79,15 +79,15 @@ const Timetable = () => {
         if(lastUpdate == undefined) {
             return "Updating..."
         } else {
-            let dif = new Date(new Date() - lastUpdate)
-            if(dif.getUTCMinutes() == 0) {
-                return "Updated just now"
-            } else if(dif.getUTCMinutes() > 0) {
-                return "Updated " + dif.getUTCMinutes() + " minutes ago"
-            } else if(dif.getUTCHours() > 0) {
-                return "Updated " + dif.getUTCHours() + " hours ago"
-            } else if(dif.getUTCHours() > 24) {
+            let dif = Math.floor(((new Date() - lastUpdate) / 1000) / 60)
+            if(dif >= (60 * 24)) {
                 return "Updated a long time ago"
+            } else if(dif >= 60) {
+                return "Updated " + Math.floor(dif / 60) + " hours ago"
+            } else if(dif > 0) {
+                return "Updated " + dif + " minutes ago"
+            } else {
+                return "Updated just now"
             }
         }
     }

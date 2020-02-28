@@ -33,8 +33,15 @@ const TimetableCard = ({ item }) => {
                 </Left>
                 <Right style={{flex: 1}}>
                     <Body style={{justifyContent: 'center'}}>
-                        {/*<Icon name="md-checkmark" style={{color: '#712177'}}/>*/}
-                        <Icon name="md-done-all" style={{color: '#712177', fontSize: 50}}/>
+                        {
+                            item.checked ? item.doubleChecked ? (
+                                <Icon name="md-done-all" style={{color: '#712177', fontSize: 50}}/>
+                            ) : (
+                                <Icon name="md-checkmark" style={{color: '#712177', fontSize: 50}}/>
+                            ) : (
+                                <Icon name="md-close" style={{color: '#712177', fontSize: 50}}/>
+                            )
+                        }
                     </Body>
                 </Right>
             </CardItem>
