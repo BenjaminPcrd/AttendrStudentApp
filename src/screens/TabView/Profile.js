@@ -8,6 +8,8 @@ import {
     Icon
 } from 'native-base'
 
+import ModalScreen from './ModalScreen'
+
 const Profile = () => {
     const [modalVisible, setModalVisible] = useState(false)
 
@@ -18,9 +20,7 @@ const Profile = () => {
                 transparent={false}
                 visible={modalVisible}
             >
-                <Button style={{width: 50, alignSelf: 'flex-end'}} transparent onPress={() => setModalVisible(false)}>
-                    <Icon name="md-close" style={{color: 'black'}}/>
-                </Button>
+                <ModalScreen setModalVisible={setModalVisible}/>
             </Modal>
             <Content contentContainerStyle={{ justifyContent: 'space-evenly', alignItems: 'center', flex: 1 }}>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>Picard Benjamin</Text>

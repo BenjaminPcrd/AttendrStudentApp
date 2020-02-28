@@ -47,13 +47,21 @@ const Timetable = () => {
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true)
-        update().catch(err => {
-            Toast.show({
-                text: "Couldn't get data",
-                duration: 2000
+        update()
+            .then(() => {
+                Toast.show({
+                    text: "Timetable updated",
+                    duration: 2000
+                })
+                setRefreshing(false)
             })
-            setRefreshing(false)
-        })
+            .catch(() => {
+                Toast.show({
+                    text: "Couldn't get timetable data",
+                    duration: 2000
+                })
+                setRefreshing(false)
+            })
         //setTimeout(() => setRefreshing(false), 2000)
       }, [refreshing])
 
