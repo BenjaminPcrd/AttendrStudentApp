@@ -1,41 +1,43 @@
 import React, { useState, useEffect } from 'react'
-
 import {
     View,
-    Image,
-    Animated
 } from 'react-native'
-
 import {
     Container,
     Content,
     Button,
     Icon,
-    Text
+    Text,
+    Spinner
 } from 'native-base'
-import { Easing } from 'react-native-reanimated'
-
-const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
 const ModalScreen = ({ setModalVisible }) => {
-    const [iconAnim] = useState(new Animated.Value(0))
+    const [marked, setMarked] = useState(false)
+
     useEffect(() => {
-        Animated.timing(iconAnim, {toValue: 200, easing: Easing.linear}).start()
+        setTimeout(() => setMarked(true), 3000)
     }, [])
 
-    console.log(iconAnim)
+    console.log(marked)
     return (
-        <Container style={{backgroundColor: "rgb(100, 100, 200)"}}>
+        <Container>
             <Button style={{alignSelf: 'flex-end'}} transparent onPress={() => setModalVisible(false)}>
-                <Icon name="md-close-circle-outline" style={{color: 'white'}}/>
+                <Icon name="md-close-circle-outline" style={{color: 'black'}}/>
             </Button>
-            <Content contentContainerStyle={{flex: 1, justifyContent: 'center'}}>
-                <AnimatedIcon
-                    name="md-checkmark-circle-outline" 
-                    style={{color: 'white', fontSize: iconAnim, alignSelf: 'center'}}
-                />
-            </Content>
-            
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{flex: 2, justifyContent: 'center'}}>
+                    {
+                        marked ? (
+                            <Icon name="md-checkmark-circle-outline" style={{alignSelf: 'center', color: '#712177', fontSize: 65}}/>
+                        ) : (
+                            <Spinner color='#712177'/>
+                        )
+                    }
+                </View>
+                <View style={{flex: 1}}>
+                    <Text>{marked ? "Marked" : "Not marked"}</Text>
+                </View>
+            </View>
         </Container>
         
     )
