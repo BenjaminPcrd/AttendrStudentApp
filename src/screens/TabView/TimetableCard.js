@@ -19,7 +19,7 @@ const TimetableCard = ({ item }) => {
             <CardItem header bordered>
                 <View style={{
                     flex: 1, 
-                    backgroundColor: item.typeId == 0 ? "rgb(100, 200, 100)" : "rgb(200, 100, 150)", 
+                    backgroundColor: item.typeId == 0 ? '#5cb85c' : '#f0ad4e', 
                     paddingLeft: 10, paddingTop: 5, paddingBottom: 5,
                     borderRadius: 10
                 }}><Text style={{color: 'black'}}>{item.type}</Text></View>
@@ -27,7 +27,7 @@ const TimetableCard = ({ item }) => {
             <CardItem>
                 <Left style={{flex: 3}}>
                     <Body>
-                        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'rgb(100, 100, 200)'}}>{item.moduleName}</Text>
+                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{item.moduleName}</Text>
                         <Text style={{color: 'grey'}}>{item.staff}</Text>
                     </Body>
                 </Left>

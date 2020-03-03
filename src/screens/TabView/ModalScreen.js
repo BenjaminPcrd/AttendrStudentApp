@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import {
     View,
+    Image
 } from 'react-native'
 import {
     Container,
     Content,
     Button,
     Icon,
-    Text,
-    Spinner
+    Text
 } from 'native-base'
+
+const icons = [require("../../assets/bluetooth0.png"), require("../../assets/bluetooth1.png"), require("../../assets/bluetooth2.png"), require("../../assets/bluetooth3.png")]
+
+const AnimatedIcon = () => {
+    const [iconIndex, setIconIndex] = useState(0)
+
+    useEffect(() => {
+        setTimeout(() => {
+            iconIndex == icons.length - 1 ? setIconIndex(0) : setIconIndex(iconIndex + 1)
+        }, 300)
+    }, [iconIndex])
+
+    return (
+        <Image source={icons[iconIndex]} style={{resizeMode: 'cover'}}/>
+    )
+}
 
 const ModalScreen = ({ setModalVisible }) => {
     const [marked, setMarked] = useState(false)
@@ -18,28 +34,36 @@ const ModalScreen = ({ setModalVisible }) => {
         setTimeout(() => setMarked(true), 3000)
     }, [])
 
-    console.log(marked)
     return (
         <Container>
-            <Button style={{alignSelf: 'flex-end'}} transparent onPress={() => setModalVisible(false)}>
-                <Icon name="md-close-circle-outline" style={{color: 'black'}}/>
-            </Button>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <View style={{flex: 2, justifyContent: 'center'}}>
-                    {
-                        marked ? (
-                            <Icon name="md-checkmark-circle-outline" style={{alignSelf: 'center', color: '#712177', fontSize: 65}}/>
-                        ) : (
-                            <Spinner color='#712177'/>
-                        )
-                    }
-                </View>
-                <View style={{flex: 1}}>
-                    <Text>{marked ? "Marked" : "Not marked"}</Text>
-                </View>
-            </View>
+            {
+                marked ? (
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Icon name="md-checkmark-circle-outline" style={{alignSelf: 'center', color: '#712177', fontSize: 100}}/>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'space-evenly'}}>
+                            <Text>Marked succesfully!</Text>
+                            <Button full onPress={() => setModalVisible(false)}>
+                                <Text>Go back</Text>
+                            </Button>
+                        </View>
+                    </View>
+                ) : (
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <AnimatedIcon/>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'space-evenly'}}>
+                            <Text>Marking, please wait...</Text>
+                            <Button full onPress={() => setModalVisible(false)}>
+                                <Text>Go back</Text>
+                            </Button>
+                        </View>
+                    </View>
+                )
+            }
         </Container>
-        
     )
 }
 
