@@ -23,7 +23,7 @@ const AnimatedIcon = () => {
     }, [iconIndex])
 
     return (
-        <Image source={icons[iconIndex]} style={{resizeMode: 'cover'}}/>
+        <Image source={icons[iconIndex]} style={{resizeMode: 'contain', backgroundColor: 'red', width: 300}}/> 
     )
 }
 
@@ -31,7 +31,7 @@ const ModalScreen = ({ setModalVisible }) => {
     const [marked, setMarked] = useState(false)
 
     useEffect(() => {
-        setTimeout(() => setMarked(true), 3000)
+        setTimeout(() => setMarked(true), 5000)
     }, [])
 
     return (
