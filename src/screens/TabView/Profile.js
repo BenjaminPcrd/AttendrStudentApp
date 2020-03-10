@@ -1,11 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Modal, FlatList, View, Dimensions, UIManager, LayoutAnimation } from 'react-native'
+import NetInfo from "@react-native-community/netinfo";
 import {
     Container,
     Content,
     Text,
     Button,
-    Spinner,
     Toast
 } from 'native-base'
 
@@ -19,18 +19,37 @@ const Profile = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const [attendanceToSync, setAttendanceToSync] = useState([new Date(), new Date(), new Date(), new Date()])
 
+    useEffect(() => {
+        NetInfo.fetch().then(state => {
+            if(state.isConnected) {
+                if(attendanceToSync.length > 0) syncAttendance()
+            } else {
+                Toast.show({
+                    text: "You're not connected to internet...",
+                    duration: 2000
+                })
+            }
+        })
+    }, [])
+
     const syncAttendance = () => {
-        
-        setTimeout(() => {
-            Toast.show({
-                text: "Previous attendances synced",
-                duration: 2000
-    
-            })
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-            setAttendanceToSync([])
-        }, 1000)
-        
+        NetInfo.fetch().then(state => {
+            if(!state.isConnected) {
+                Toast.show({
+                    text: "You're not connected to internet...",
+                    duration: 2000
+                })
+            } else {
+                setTimeout(() => {
+                    Toast.show({
+                        text: "Previous attendances synced",
+                        duration: 2000
+                    })
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                    setAttendanceToSync([])
+                }, 1000)
+            }
+        })
     }
 
     return (
