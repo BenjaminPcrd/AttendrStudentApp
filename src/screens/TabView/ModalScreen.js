@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {
     View,
-    Image
+    Image,
+    Dimensions,
+    Animated
 } from 'react-native'
 import {
     Container,
@@ -13,8 +15,12 @@ import {
 
 const icons = [require("../../assets/bluetooth0.png"), require("../../assets/bluetooth1.png"), require("../../assets/bluetooth2.png"), require("../../assets/bluetooth3.png")]
 
-const AnimatedIcon = () => {
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
+
+const AnimatedIcon = ({widthAnim}) => {
     const [iconIndex, setIconIndex] = useState(0)
+    
 
     useEffect(() => {
         setTimeout(() => {
@@ -23,12 +29,13 @@ const AnimatedIcon = () => {
     }, [iconIndex])
 
     return (
-        <Image source={icons[iconIndex]} style={{resizeMode: 'contain', backgroundColor: 'red', width: 300}}/> 
+        <Animated.Image source={icons[iconIndex]} style={{resizeMode: 'contain', backgroundColor: 'red', width: widthAnim}}/> 
     )
 }
 
 const ModalScreen = ({ setModalVisible }) => {
     const [marked, setMarked] = useState(false)
+    const [widthAnim] = useState(new Animated.Value(windowWidth))
 
     useEffect(() => {
         setTimeout(() => setMarked(true), 5000)
@@ -52,7 +59,7 @@ const ModalScreen = ({ setModalVisible }) => {
                 ) : (
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
-                            <AnimatedIcon/>
+                            <AnimatedIcon widthAnim/>
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marking, please wait...</Text>
