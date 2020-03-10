@@ -32,7 +32,7 @@ const ModalScreen = ({ setModalVisible }) => {
                 widthAnim,
                 {
                     toValue: 0,
-                    duration: 150
+                    duration: 100
                 }
             ).start(() => {
                 setMarked(true)
@@ -40,7 +40,7 @@ const ModalScreen = ({ setModalVisible }) => {
                     widthAnim,
                     {
                         toValue: 100,
-                        duration: 150
+                        duration: 100
                     }
                 ).start()
             })

@@ -3,7 +3,9 @@ import React, { useEffect, useState, useCallback } from "react"
 import {
     FlatList,
     View,
-    RefreshControl
+    RefreshControl,
+    LayoutAnimation,
+    UIManager
 } from 'react-native'
 
 import { 
@@ -17,6 +19,7 @@ import TimetableCard from './TimetableCard'
 
 import AsyncStorage from '@react-native-community/async-storage'
 
+UIManager.setLayoutAnimationEnabledExperimental(true)
 function getTimetableData() {
     const url = "http://bepicard.com/timetable"
     return new Promise((resolve, reject) => {
@@ -99,7 +102,7 @@ const Timetable = () => {
             }
         }
     }
-    
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     return (
         <Container style={{paddingLeft: 5, paddingRight: 5}}>
             <FlatList 
@@ -111,7 +114,6 @@ const Timetable = () => {
                         <View>
                             <Text style={{marginTop: 10, textAlign: 'center', fontWeight: 'bold', fontSize: 20}}>{new Date().toDateString()}</Text>
                             <Text style={{color: 'grey'}}>{lastUpdateLabel()}</Text>
-                            
                         </View>
                     )
                 }}
