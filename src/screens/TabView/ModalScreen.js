@@ -3,8 +3,10 @@ import {
     View,
     Image,
     Dimensions,
-    Animated
+    Animated,
+    Easing
 } from 'react-native'
+
 import {
     Container,
     Content,
@@ -16,30 +18,40 @@ import {
 const icons = [require("../../assets/bluetooth0.png"), require("../../assets/bluetooth1.png"), require("../../assets/bluetooth2.png"), require("../../assets/bluetooth3.png")]
 
 const windowWidth = Dimensions.get('window').width
-const windowHeight = Dimensions.get('window').height
+const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
-const AnimatedIcon = ({widthAnim}) => {
+const ModalScreen = ({ setModalVisible }) => {
+    const [marked, setMarked] = useState(false)
     const [iconIndex, setIconIndex] = useState(0)
-    
+    const [widthAnim] = useState(new Animated.Value(windowWidth))
+
+    useEffect(() => {
+        setTimeout(async() => {
+
+            Animated.timing(
+                widthAnim,
+                {
+                    toValue: 0,
+                    duration: 150
+                }
+            ).start(() => {
+                setMarked(true)
+                Animated.spring(
+                    widthAnim,
+                    {
+                        toValue: 100,
+                        duration: 150
+                    }
+                ).start()
+            })
+        }, 3000)
+    }, [])
 
     useEffect(() => {
         setTimeout(() => {
             iconIndex == icons.length - 1 ? setIconIndex(0) : setIconIndex(iconIndex + 1)
-        }, 300)
+        }, 400)
     }, [iconIndex])
-
-    return (
-        <Animated.Image source={icons[iconIndex]} style={{resizeMode: 'contain', backgroundColor: 'red', width: widthAnim}}/> 
-    )
-}
-
-const ModalScreen = ({ setModalVisible }) => {
-    const [marked, setMarked] = useState(false)
-    const [widthAnim] = useState(new Animated.Value(windowWidth))
-
-    useEffect(() => {
-        setTimeout(() => setMarked(true), 5000)
-    }, [])
 
     return (
         <Container>
@@ -47,7 +59,7 @@ const ModalScreen = ({ setModalVisible }) => {
                 marked ? (
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
-                            <Icon name="md-checkmark-circle-outline" style={{alignSelf: 'center', color: '#712177', fontSize: 100}}/>
+                            <AnimatedIcon name="md-checkmark-circle-outline" style={{alignSelf: 'center', color: '#712177', fontSize: widthAnim}}/>
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marked succesfully!</Text>
@@ -59,7 +71,7 @@ const ModalScreen = ({ setModalVisible }) => {
                 ) : (
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
-                            <AnimatedIcon widthAnim/>
+                            <Animated.Image source={icons[iconIndex]} style={{resizeMode: 'contain', width: widthAnim}}/> 
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marking, please wait...</Text>
