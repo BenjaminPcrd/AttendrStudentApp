@@ -1,16 +1,37 @@
 import React, { useState } from "react"
-import { Modal, FlatList } from 'react-native'
+import { Modal, FlatList, View, Dimensions, UIManager, LayoutAnimation } from 'react-native'
 import {
     Container,
     Content,
     Text,
-    Button
+    Button,
+    Spinner,
+    Toast
 } from 'native-base'
 
 import ModalScreen from './ModalScreen'
 
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
+UIManager.setLayoutAnimationEnabledExperimental(true)
+
 const Profile = () => {
     const [modalVisible, setModalVisible] = useState(false)
+    const [attendanceToSync, setAttendanceToSync] = useState([new Date(), new Date(), new Date(), new Date()])
+
+    const syncAttendance = () => {
+        
+        setTimeout(() => {
+            Toast.show({
+                text: "Previous attendances synced",
+                duration: 2000
+    
+            })
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setAttendanceToSync([])
+        }, 1000)
+        
+    }
 
     return (
         <Container>
@@ -27,16 +48,24 @@ const Profile = () => {
                 <Text>1907005</Text>
 
                 <Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
-                    <Text>Attend</Text>
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>Attend</Text>
                 </Button>
 
             </Content>
-            <FlatList
-                    style={{width: 300, maxHeight: 150, alignSelf: 'center'}}
-                    data={["att1", "att2", "att3", "att1", "att2", "att3", "att1", "att2", "att3", "att1", "att2"]}
-                    renderItem={({ item }) => <Text style={{textAlign: 'center'}}>{item}</Text>}
-                    keyExtractor={(item, index) => index.toString()}
-                />
+            {
+                attendanceToSync.length > 0 ? (
+                    <View>
+                        <Button style={{alignSelf: 'center'}} small success rounded onPress={syncAttendance}><Text>Sync previous attendances</Text></Button>
+                        <FlatList
+                            style={{width: windowWidth, maxHeight: windowHeight / 6, alignSelf: 'center', marginTop: 10}}
+                            data={attendanceToSync}
+                            renderItem={({ item }) => <Text style={{textAlign: 'center'}}>{item.toLocaleString()}</Text>}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
+                ) : <View></View>
+            }
+            
         </Container>
     )
 }
