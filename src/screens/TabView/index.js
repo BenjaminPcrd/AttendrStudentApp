@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import {
     Alert,
 } from 'react-native'
@@ -10,9 +10,7 @@ import {
     Title, 
     Right, 
     Button,
-    TabHeading, 
-    Icon, 
-    Text 
+    Icon
 } from 'native-base'
 
 import Profile from './Profile'
@@ -36,7 +34,7 @@ const TabView = ({ navigation }) => {
             ]
         )
     }
-
+    
     return (
         <Container>
             <Header hasTabs>
@@ -50,14 +48,6 @@ const TabView = ({ navigation }) => {
                     </Button>
                 </Right>
             </Header>
-            {/*<Tabs tabBarPosition={'bottom'}>
-                <Tab heading={ <TabHeading><Icon name="md-person" /><Text>Profile</Text></TabHeading>}>
-                    <Profile />
-                </Tab>
-                <Tab heading={ <TabHeading><Icon name="md-calendar" /><Text>Timetable</Text></TabHeading>}>
-                    <Timetable />
-                </Tab>
-            </Tabs>*/}
             <Tab.Navigator
                 lazy={true}
                 tabBarOptions={{
@@ -77,8 +67,8 @@ const TabView = ({ navigation }) => {
                     }
                 })}
             >
-                <Tab.Screen name='Profile' component={Profile} />
-                <Tab.Screen name='Timetable' component={Timetable} />
+                <Tab.Screen name='Profile' component={Profile}/>
+                <Tab.Screen name='Timetable' component={Timetable}/>
             </Tab.Navigator>
       </Container>
     )
