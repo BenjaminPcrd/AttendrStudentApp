@@ -20,7 +20,7 @@ const icons = [require("../../assets/bluetooth0.png"), require("../../assets/blu
 const windowWidth = Dimensions.get('window').width
 const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
-const ModalScreen = ({ setModalVisible }) => {
+const ModalScreen = (props) => {
     const [marked, setMarked] = useState(false)
     const [iconIndex, setIconIndex] = useState(0)
     const [widthAnim] = useState(new Animated.Value(windowWidth))
@@ -63,7 +63,7 @@ const ModalScreen = ({ setModalVisible }) => {
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marked succesfully!</Text>
-                            <Button full onPress={() => setModalVisible(false)}>
+                            <Button full onPress={() => { props.setModalVisible(false); props.exitFunc(1) }}>
                                 <Text>Go back</Text>
                             </Button>
                         </View>
@@ -75,7 +75,7 @@ const ModalScreen = ({ setModalVisible }) => {
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marking, please wait...</Text>
-                            <Button full onPress={() => setModalVisible(false)}>
+                            <Button full onPress={() => { props.setModalVisible(false); props.exitFunc(1) }}>
                                 <Text>Go back</Text>
                             </Button>
                         </View>

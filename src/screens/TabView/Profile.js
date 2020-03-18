@@ -9,25 +9,26 @@ import {
 } from 'native-base'
 import NetInfo from "@react-native-community/netinfo"
 import AsyncStorage from '@react-native-community/async-storage'
+import AttendanceControls from 'react-native-attendance-handler'
 
 import ModalScreen from './ModalScreen'
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 UIManager.setLayoutAnimationEnabledExperimental(true)
-const sessionsUnsyncedData = [
-    {timeStamp: new Date(), ids: [457, 478]},
-    {timeStamp: new Date(), ids: [789, 654]},
-    {timeStamp: new Date(), ids: [537, 985]},
-    {timeStamp: new Date(), ids: [124, 563]},
-    {timeStamp: new Date(), ids: [417, 254]}
+var sessionsUnsyncedData = [
+    {timeStamp: Date.now(), ids: [457, 478]},
+    {timeStamp: Date.now(), ids: [789, 654]},
+    {timeStamp: Date.now(), ids: [537, 985]}
 ]
 
 const Profile = ({route}) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [sessionsUnsynced, setSessionsUnsynced] = useState([])
+    const [cancelAttendance, setCancelAttendance] = useState(0)
 
-    const unsubscribe = NetInfo.addEventListener(state => {
+    /*const unsubscribe = NetInfo.addEventListener(state => {
         if(state.isConnected) {
             if(state.isConnected) {
                 Toast.show({
@@ -41,7 +42,7 @@ const Profile = ({route}) => {
                 })
             }
         }   
-    })
+    })*/
 
     useEffect(() => {
         async function getSessionsUnsynced() {
@@ -49,12 +50,14 @@ const Profile = ({route}) => {
             const sessions_unsynced = await AsyncStorage.getItem('SESSIONS_UNSYNCED')
             if(sessions_unsynced != null) {
                 const { isConnected } = await NetInfo.fetch()
-                if(isConnected) {
+                /*if(isConnected) {
                     await syncSessions()
                 } else {
                     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
                     setSessionsUnsynced(JSON.parse(sessions_unsynced))
-                }
+                }*/
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                setSessionsUnsynced(JSON.parse(sessions_unsynced))
             }
         }
         getSessionsUnsynced()
@@ -76,7 +79,11 @@ const Profile = ({route}) => {
                 duration: 2000
             })
         }
-        
+    }
+
+    const setUnsyncedData = async (data) => {
+        //sessionsUnsyncedData = [...sessionsUnsyncedData,data]
+        setSessionsUnsynced(prevState => [...prevState, data])
     }
 
     return (
@@ -86,16 +93,19 @@ const Profile = ({route}) => {
                 transparent={false}
                 visible={modalVisible}
             >
-                <ModalScreen setModalVisible={setModalVisible}/>
+                <ModalScreen exitFunc={setCancelAttendance} setModalVisible={setModalVisible}/>
             </Modal>
             <Content padder contentContainerStyle={{ justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>Hello</Text>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>Picard Benjamin</Text>
                 <Text>1907005</Text>
 
-                <Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
+                {/*<Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>Attend</Text>
-                </Button>
+                </Button>*/}
+                <TouchableOpacity onPress={() => { setModalVisible(true); setCancelAttendance(0) }}>
+                    <AttendanceControls syncFunc={setUnsyncedData} exitCall={cancelAttendance} stopOnSuccess={1} buttonStopText={"Stop Attendance"} type={1} />
+                </TouchableOpacity>
 
             </Content>
             {
