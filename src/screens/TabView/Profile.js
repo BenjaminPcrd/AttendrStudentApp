@@ -87,6 +87,7 @@ const Profile = ({ route }) => {
         unsyncData = JSON.parse(unsyncData)
         unsyncData.push(data)
         AsyncStorage.setItem("SESSIONS_UNSYNCED", JSON.stringify(unsyncData))
+        setSessionsUnsynced(prevState => [...prevState, data])
         setModalScreenState(1)
     }
 
