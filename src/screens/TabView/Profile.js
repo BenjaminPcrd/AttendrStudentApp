@@ -18,15 +18,16 @@ const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 UIManager.setLayoutAnimationEnabledExperimental(true)
 var sessionsUnsyncedData = [
-    {timeStamp: Date.now(), ids: [457, 478]},
-    {timeStamp: Date.now(), ids: [789, 654]},
-    {timeStamp: Date.now(), ids: [537, 985]}
+    { timeStamp: Date.now(), ids: [457, 478] },
+    { timeStamp: Date.now(), ids: [789, 654] },
+    { timeStamp: Date.now(), ids: [537, 985] }
 ]
 
-const Profile = ({route}) => {
+const Profile = ({ route }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [sessionsUnsynced, setSessionsUnsynced] = useState([])
     const [cancelAttendance, setCancelAttendance] = useState(0)
+    const [modalScreenState, setModalScreenState] = useState(0)
 
     /*const unsubscribe = NetInfo.addEventListener(state => {
         if(state.isConnected) {
@@ -48,7 +49,7 @@ const Profile = ({route}) => {
         async function getSessionsUnsynced() {
             await AsyncStorage.setItem('SESSIONS_UNSYNCED', JSON.stringify(sessionsUnsyncedData)) //remove this
             const sessions_unsynced = await AsyncStorage.getItem('SESSIONS_UNSYNCED')
-            if(sessions_unsynced != null) {
+            if (sessions_unsynced != null) {
                 const { isConnected } = await NetInfo.fetch()
                 /*if(isConnected) {
                     await syncSessions()
@@ -65,7 +66,7 @@ const Profile = ({route}) => {
 
     const syncSessions = async () => {
         const { isConnected } = await NetInfo.fetch()
-        if(isConnected) {
+        if (isConnected) {
             await AsyncStorage.removeItem('SESSIONS_UNSYNCED')
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
             setSessionsUnsynced([])
@@ -82,8 +83,11 @@ const Profile = ({route}) => {
     }
 
     const setUnsyncedData = async (data) => {
-        //sessionsUnsyncedData = [...sessionsUnsyncedData,data]
-        setSessionsUnsynced(prevState => [...prevState, data])
+        var unsyncData = await AsyncStorage.getItem('SESSIONS_UNSYNCED')
+        unsyncData = JSON.parse(unsyncData)
+        unsyncData.push(data)
+        AsyncStorage.setItem("SESSIONS_UNSYNCED", JSON.stringify(unsyncData))
+        setModalScreenState(1)
     }
 
     return (
@@ -93,29 +97,29 @@ const Profile = ({route}) => {
                 transparent={false}
                 visible={modalVisible}
             >
-                <ModalScreen exitFunc={setCancelAttendance} setModalVisible={setModalVisible}/>
+                <ModalScreen modalState={modalScreenState} exitFunc={setCancelAttendance} setModalVisible={setModalVisible} />
             </Modal>
             <Content padder contentContainerStyle={{ justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
-                <Text style={{fontSize: 30, fontWeight: 'bold'}}>Hello</Text>
-                <Text style={{fontSize: 30, fontWeight: 'bold'}}>Picard Benjamin</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Hello</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Picard Benjamin</Text>
                 <Text>1907005</Text>
 
                 {/*<Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>Attend</Text>
                 </Button>*/}
-                <TouchableOpacity onPress={() => { setModalVisible(true); setCancelAttendance(0) }}>
-                    <AttendanceControls syncFunc={setUnsyncedData} exitCall={cancelAttendance} stopOnSuccess={1} buttonStopText={"Stop Attendance"} type={1} />
+                <TouchableOpacity onPress={() => { setModalVisible(true); setCancelAttendance(0); setModalScreenState(0) }}>
+                    <AttendanceControls changeModalState={setModalScreenState} syncFunc={setUnsyncedData} exitCall={cancelAttendance} stopOnSuccess={1} buttonStopText={"Stop Attendance"} type={1} />
                 </TouchableOpacity>
 
             </Content>
             {
                 sessionsUnsynced.length > 0 ? (
                     <View>
-                        <Button style={{alignSelf: 'center'}} small success rounded onPress={syncSessions}><Text>Sync previous sessions</Text></Button>
+                        <Button style={{ alignSelf: 'center' }} small success rounded onPress={syncSessions}><Text>Sync previous sessions</Text></Button>
                         <FlatList
-                            style={{width: windowWidth, maxHeight: windowHeight / 6, alignSelf: 'center', marginTop: 10}}
+                            style={{ width: windowWidth, maxHeight: windowHeight / 6, alignSelf: 'center', marginTop: 10 }}
                             data={sessionsUnsynced.map(i => new Date(i.timeStamp))}
-                            renderItem={({ item }) => <Text style={{textAlign: 'center'}}>{item.toLocaleString()}</Text>}
+                            renderItem={({ item }) => <Text style={{ textAlign: 'center' }}>{item.toLocaleString()}</Text>}
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </View>

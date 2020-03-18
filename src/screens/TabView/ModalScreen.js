@@ -35,7 +35,7 @@ const ModalScreen = (props) => {
                     duration: 100
                 }
             ).start(() => {
-                setMarked(true)
+                //setMarked(true)
                 Animated.spring(
                     widthAnim,
                     {
@@ -56,26 +56,38 @@ const ModalScreen = (props) => {
     return (
         <Container>
             {
-                marked ? (
+                props.modalState == 1 ? ( //Success state
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <AnimatedIcon name="md-checkmark-circle-outline" style={{alignSelf: 'center', color: '#712177', fontSize: widthAnim}}/>
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marked succesfully!</Text>
-                            <Button full onPress={() => { props.setModalVisible(false); props.exitFunc(1) }}>
+                            <Button full onPress={() => {props.setModalVisible(false); props.exitFunc(1)}}>
                                 <Text>Go back</Text>
                             </Button>
                         </View>
                     </View>
-                ) : (
+                ) : props.modalState == 0 ? ( //Searching state
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Animated.Image source={icons[iconIndex]} style={{resizeMode: 'contain', width: widthAnim}}/> 
                         </View>
                         <View style={{flex: 1, justifyContent: 'space-evenly'}}>
                             <Text>Marking, please wait...</Text>
-                            <Button full onPress={() => { props.setModalVisible(false); props.exitFunc(1) }}>
+                            <Button full onPress={() => {props.setModalVisible(false); props.exitFunc(1)}}>
+                                <Text>Go back</Text>
+                            </Button>
+                        </View>
+                    </View>
+                ) : ( //Failure state (timeout state)
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Animated.Image source={icons[iconIndex]} style={{resizeMode: 'contain', width: widthAnim}}/> 
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'space-evenly'}}>
+                            <Text>FAILED TO FIND BEACONS! :( </Text>
+                            <Button full onPress={() => {props.setModalVisible(false); props.exitFunc(1)}}>
                                 <Text>Go back</Text>
                             </Button>
                         </View>
