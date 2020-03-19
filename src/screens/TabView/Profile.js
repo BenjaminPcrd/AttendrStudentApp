@@ -5,7 +5,8 @@ import {
     Content,
     Text,
     Button,
-    Toast
+    Toast,
+    InputGroup
 } from 'native-base'
 import NetInfo from "@react-native-community/netinfo"
 import AsyncStorage from '@react-native-community/async-storage'
@@ -83,10 +84,15 @@ const Profile = ({ route }) => {
     }
 
     const setUnsyncedData = async (data) => {
-        var unsyncData = await AsyncStorage.getItem('SESSIONS_UNSYNCED')
-        unsyncData = JSON.parse(unsyncData)
-        unsyncData.push(data)
-        AsyncStorage.setItem("SESSIONS_UNSYNCED", JSON.stringify(unsyncData))
+        var unsyncData = await AsyncStorage.getItem('SESSIONS_UNSYNCED')   
+        if(unsyncData){
+            unsyncData = JSON.parse(unsyncData)
+            unsyncData.push(data)
+            AsyncStorage.setItem("SESSIONS_UNSYNCED", JSON.stringify(unsyncData))
+        }
+        else{
+            AsyncStorage.setItem("SESSIONS_UNSYNCED", JSON.stringify([data]))
+        }
         setSessionsUnsynced(prevState => [...prevState, data])
         setModalScreenState(1)
     }
@@ -109,7 +115,7 @@ const Profile = ({ route }) => {
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>Attend</Text>
                 </Button>*/}
                 <TouchableOpacity onPress={() => { setModalVisible(true); setCancelAttendance(0); setModalScreenState(0) }}>
-                    <AttendanceControls changeModalState={setModalScreenState} syncFunc={setUnsyncedData} exitCall={cancelAttendance} stopOnSuccess={1} buttonStopText={"Stop Attendance"} type={1} />
+                    <AttendanceControls changeModalState={setModalScreenState} syncFunc={setUnsyncedData} exitCall={cancelAttendance} buttonStartText={"Start Attendance"} buttonStopText={"Stop Attendance"} type={1} successCounter={5} timeout={60000} />
                 </TouchableOpacity>
 
             </Content>
