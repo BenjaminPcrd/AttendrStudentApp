@@ -107,26 +107,25 @@ const Profile = ({ route }) => {
                 <ModalScreen modalState={modalScreenState} exitFunc={setCancelAttendance} setModalVisible={setModalVisible} />
             </Modal>
             <Content padder contentContainerStyle={{ justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Hello</Text>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Picard Benjamin</Text>
-                <Text>1907005</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 30 }}>Hello Benjamin</Text>
+                <Text style={{marginTop:-60}}>1907005</Text>
 
                 {/*<Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>Attend</Text>
                 </Button>*/}
-                <TouchableOpacity onPress={() => { setModalVisible(true); setCancelAttendance(0); setModalScreenState(0) }}>
+                <TouchableOpacity style={{marginBottom: 80}} onPress={() => { setModalVisible(true); setCancelAttendance(0); setModalScreenState(0) }}>
                     <AttendanceControls changeModalState={setModalScreenState} syncFunc={setUnsyncedData} exitCall={cancelAttendance} buttonStartText={"Start Attendance"} buttonStopText={"Stop Attendance"} type={1} successCounter={5} timeout={60000} />
                 </TouchableOpacity>
 
             </Content>
             {
                 sessionsUnsynced.length > 0 ? (
-                    <View>
+                    <View style={{marginBottom: 80}}>
                         <Button style={{ alignSelf: 'center' }} small success rounded onPress={syncSessions}><Text>Sync previous sessions</Text></Button>
                         <FlatList
                             style={{ width: windowWidth, maxHeight: windowHeight / 6, alignSelf: 'center', marginTop: 10 }}
-                            data={sessionsUnsynced.map(i => new Date(i.timeStamp))}
-                            renderItem={({ item }) => <Text style={{ textAlign: 'center' }}>{item.toLocaleString()}</Text>}
+                            data={sessionsUnsynced}
+                            renderItem={({ item }) => <Text style={{ textAlign: 'center' }}>{new Date(item.timeStamp).toLocaleString() + " "}{item.ids.map(id => "| " + id + " ")}</Text>}
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </View>
