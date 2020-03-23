@@ -10,7 +10,8 @@ import {
     Title, 
     Right, 
     Button,
-    Icon
+    Icon,
+    Text
 } from 'native-base'
 
 import Profile from './Profile'
@@ -52,16 +53,23 @@ const TabView = ({ navigation }) => {
                 lazy={true}
                 tabBarOptions={{
                     activeTintColor: "white",
-                    style: { backgroundColor: '#712177' }
+                    activeBackgroundColor: "#712177",
+                    inactiveTintColor: "#712177",
+                    inactiveBackgroundColor: "white",
+
+                    labelStyle: { fontSize: 13 }
                 }}
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
-                        let iconColor = focused ? 'white' : 'grey'
-                        let iconName
-                        if(route.name === 'Profile') {
-                            iconName = 'md-person'
-                        } else {
-                            iconName = 'md-calendar'
+                        let iconColor 
+                        let iconName = focused ? iconColor = 'white' : iconColor = '#712177'
+                        switch(route.name) {
+                            case "Profile":
+                                iconName = 'md-person'
+                                break
+                            case "Timetable":
+                                iconName = 'md-calendar'
+                                break
                         }
                         return <Icon name={iconName} style={{color: iconColor}}/>
                     }

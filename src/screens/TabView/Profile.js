@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react"
-import { Modal, FlatList, View, Dimensions, UIManager, LayoutAnimation } from 'react-native'
+import { Modal, FlatList, View, Dimensions, UIManager, LayoutAnimation, StyleSheet } from 'react-native'
 import {
     Container,
     Content,
     Text,
     Button,
     Toast,
-    InputGroup
+    Icon
 } from 'native-base'
 import NetInfo from "@react-native-community/netinfo"
 import AsyncStorage from '@react-native-community/async-storage'
@@ -106,26 +106,29 @@ const Profile = ({ route }) => {
             >
                 <ModalScreen modalState={modalScreenState} exitFunc={setCancelAttendance} setModalVisible={setModalVisible} />
             </Modal>
-            <Content padder contentContainerStyle={{ justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 30 }}>Hello Benjamin</Text>
-                <Text style={{marginTop:-20}}>1907005</Text>
-
-                {/*<Button block rounded style={{ margin: 15, marginTop: 50, height: 100 }} onPress={() => setModalVisible(true)}>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>Attend</Text>
-                </Button>*/}
-                <TouchableOpacity style={{marginBottom: 60}} onPress={() => { setModalVisible(true); setCancelAttendance(0); setModalScreenState(0) }}>
+            <Content padder>
+                <View style={styles.top}>
+                    <Text style={styles.hello}>Hello</Text>
+                    <Text style={styles.name}>Benjamin Franklin</Text>
+                    <Text style={styles.number}>1907005</Text>
+                </View>
+                
+                <TouchableOpacity style={styles.button} onPress={() => { setModalVisible(true); setCancelAttendance(0); setModalScreenState(0) }}>
                     <AttendanceControls changeModalState={setModalScreenState} syncFunc={setUnsyncedData} exitCall={cancelAttendance} buttonStartText={"Start Attendance"} buttonStopText={"Stop Attendance"} type={1} successCounter={5} timeout={60000} />
                 </TouchableOpacity>
 
             </Content>
             {
                 sessionsUnsynced.length > 0 ? (
-                    <View style={{marginBottom: 20}}>
-                        <Button style={{ alignSelf: 'center' }} small success rounded onPress={syncSessions}><Text>Sync previous sessions</Text></Button>
+                    <View>
+                        <View style={styles.bottom}>
+                            <Text style={styles.prevSes}>Previous sessions</Text>
+                            <Button transparent onPress={syncSessions}><Icon name={'md-sync'} style={styles.iconSync}/><Text style={styles.textSync}>sync now</Text></Button>
+                        </View>
                         <FlatList
-                            style={{ width: windowWidth, maxHeight: windowHeight / 6, alignSelf: 'center', marginTop: 10 }}
+                            style={styles.flatList}
                             data={sessionsUnsynced}
-                            renderItem={({ item }) => <Text style={{ textAlign: 'center' }}>{new Date(item.timeStamp).toLocaleString() + " "}{item.ids.map(id => "| " + id + " ")}</Text>}
+                            renderItem={({ item }) => <Text>{new Date(item.timeStamp).toLocaleString() + " "}{item.ids.map(id => "| " + id + " ")}</Text>}
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </View>
@@ -134,5 +137,18 @@ const Profile = ({ route }) => {
         </Container>
     )
 }
+
+const styles = StyleSheet.create({
+    top: { flex: 1, marginTop: 10, marginLeft: 10 },
+    hello: { fontSize: 45 },
+    name: { fontSize: 30, fontWeight: 'bold', color: '#712177' },
+    number: { fontSize: 20, marginTop: 10 },
+    button: { marginTop: 80 },
+    bottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
+    prevSes: { marginLeft: 15, color: '#712177', fontWeight: 'bold', fontSize: 15, },
+    iconSync: { color: "green", marginRight: 0},
+    textSync: { color: "green", marginRight: 10 },
+    flatList: { width: windowWidth, maxHeight: windowHeight / 6, marginLeft: 15, marginBottom: 15 }
+})
 
 export default Profile
